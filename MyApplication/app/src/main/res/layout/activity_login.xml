@@ -1,0 +1,103 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools" android:layout_width="fill_parent"
+    android:layout_height="fill_parent" android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin" tools:context=".LoginActivity"
+    android:background="@color/peepy_background"
+    android:weightSum="1"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/imageView"
+                android:src="@drawable/peepy_logo_login"
+            android:layout_gravity="top"
+            android:contentDescription="peepy_logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textSize="31sp"
+            android:id="@+id/tv_appName"
+            android:layout_gravity="center_horizontal"
+            android:textColor="@color/peepy_title" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:ems="10"
+                android:id="@+id/etUserName"
+                android:hint="@string/et_username"
+                android:textColor="@color/peepy_slogan"
+                android:layout_toEndOf="@+id/etPassword"
+                android:layout_alignParentTop="true"
+                android:layout_alignStart="@+id/etPassword"
+                android:layout_marginTop="20dp"
+                android:layout_alignEnd="@+id/etPassword"
+                android:layout_marginBottom="1dp" />
+
+            <EditText
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:ems="10"
+                android:id="@+id/etPassword"
+                android:hint="@string/et_password"
+                android:textColor="@color/peepy_slogan"
+                android:layout_below="@+id/etUserName"
+                android:layout_centerHorizontal="true" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:text="@string/btn_signin"
+                android:id="@+id/button"
+                android:textColor="@color/peepy_slogan"
+                android:layout_gravity="center_horizontal"
+                android:layout_below="@+id/etPassword"
+                android:layout_alignStart="@+id/etPassword"
+                android:layout_alignEnd="@+id/etPassword"
+                android:layout_marginTop="8dp"
+                android:background="@drawable/rounded_edittext" />
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="@string/btn_createaccount"
+            android:id="@+id/btnCreateAccount"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/rounded_edittext" />
+
+    </RelativeLayout>
+
+</LinearLayout>
