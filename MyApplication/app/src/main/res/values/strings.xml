@@ -6,14 +6,21 @@
     <string name="tv_about">This app was made for you to get your message out.</string>
 
     // Login screen
-    <string name="et_email">Peepy Name</string>
+    <string name="et_email">Email Address</string>
     <string name="et_password">Password</string>
 
     <string name="btn_signin">sign in</string>
     <string name="btn_createaccount">create account</string>
 
+    <string name="tv_repeatPassword">Repeat password please</string>
+    <string name="btn_confirmpassword">confirm password</string>
+
     // Chat screen
     <string name="sign_out">sign out</string>
     <string name="about">about</string>
+
+    // Log out
+    <string name="tv_logoutquestion">Really sign out?</string>
+    <string name="btn_yes">Yes</string>
 
 </resources>

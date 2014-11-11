@@ -18,11 +18,11 @@ import android.widget.Toast;
 /**
  * Created by Prince on 11/11/2014.
  */
-public class GroupActivity extends Activity {
+public class GroupActivity extends Activity implements SignOutCallback {
 
     private static final String TAG = "GroupActivity";
 
-    ListView listView ;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,39 +37,6 @@ public class GroupActivity extends Activity {
         }
 
     }
-
-    public static class GroupListFragment extends ListFragment {
-        // Defined Array values to show in ListView
-        String[] values = new String[] { "Group 1",
-                "Group 2",
-                "Group 3",
-                "Group 4",
-                "Group 5",
-                "Group 6",
-                "Group 7",
-        };
-
-        @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
-
-            // Start Chat Activity
-            Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra(TAG, position);
-            startActivity(intent);
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    inflater.getContext(), android.R.layout.simple_list_item_1,
-                    values);
-            setListAdapter(adapter);
-            return super.onCreateView(inflater, container, savedInstanceState);
-        }
-    }
-
 
     @Override
     public void onBackPressed() {
@@ -117,9 +84,12 @@ public class GroupActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sign_out) {
-            Intent intent = new Intent(GroupActivity.this, SignInActivity.class);
-            startActivity(intent);
-            finish(); // Returns to sign in activity
+
+            FragmentManager fm = getFragmentManager();
+            SignOutDialogFragment signOutDFragment = new SignOutDialogFragment(GroupActivity.this);
+            // Show DialogFragment
+            signOutDFragment.show(fm, "Dialog Fragment");
+
             return true;
         } else if (id == R.id.about) {
             Intent intent = new Intent(GroupActivity.this, AboutActivity.class);
@@ -128,6 +98,45 @@ public class GroupActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void executeSignOut() {
+        Intent intent = new Intent(GroupActivity.this, SignInActivity.class);
+        startActivity(intent);
+        finish(); // Returns to sign in activity
+    }
+
+    public static class GroupListFragment extends ListFragment {
+        // Defined Array values to show in ListView
+        String[] values = new String[]{"Group 1",
+                "Group 2",
+                "Group 3",
+                "Group 4",
+                "Group 5",
+                "Group 6",
+                "Group 7",
+        };
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+
+            // Start Chat Activity
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra(TAG, position);
+            startActivity(intent);
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    inflater.getContext(), android.R.layout.simple_list_item_1,
+                    values);
+            setListAdapter(adapter);
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
     }
 }
 

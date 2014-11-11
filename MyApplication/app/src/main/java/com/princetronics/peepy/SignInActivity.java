@@ -1,6 +1,7 @@
 package com.princetronics.peepy;
 
 import android.app.Activity;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -13,7 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class SignInActivity extends Activity {
+public class SignInActivity extends Activity implements SignInCallback {
 
     private static final String TAG = "LoginActivity";
 
@@ -65,15 +66,10 @@ public class SignInActivity extends Activity {
                     Log.d(TAG, "Username: " + etEmail.getText().toString() +
                             " Password: " + etPassword.getText().toString());
 
-                    Toast.makeText(getApplicationContext(),
-                            "Welcome to Peepy, " + etEmail.getText().toString(),
-                            Toast.LENGTH_LONG).show();
-
-                    Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-                    intent.putExtra(TAG, etEmail.getText().toString());
-                    intent.putExtra(TAG, etPassword.getText().toString());
-                    startActivity(intent);
-                    finish(); // Destroy Activity
+                    FragmentManager fm = getFragmentManager();
+                    RepeatPasswordDialogFragment repeatPasswordDFragment = new RepeatPasswordDialogFragment(SignInActivity.this);
+                    // Show DialogFragment
+                    repeatPasswordDFragment.show(fm, "Dialog Fragment");
                 }
             }
         };
@@ -163,6 +159,25 @@ public class SignInActivity extends Activity {
                 }
             }
         });
+    }
+
+    public void returnConfirmedPassword(String confirmedPassword) {
+        if (etPassword.getText().toString().equals(confirmedPassword)) {
+
+            Toast.makeText(getApplicationContext(),
+                    "Welcome to Peepy, " + etEmail.getText().toString(),
+                    Toast.LENGTH_LONG).show();
+
+            Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
+            intent.putExtra(TAG, etEmail.getText().toString());
+            intent.putExtra(TAG, etPassword.getText().toString());
+            startActivity(intent);
+            finish(); // Destroy Activity
+        } else {
+            Toast.makeText(getApplicationContext(),
+                    "Wrong password repeated!",
+                    Toast.LENGTH_LONG).show();
+        }
     }
 
     @Override

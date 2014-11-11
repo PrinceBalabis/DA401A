@@ -1,12 +1,10 @@
 package com.princetronics.peepy;
 
 import android.app.Fragment;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 /**
  * Created by Prince on 11/11/2014.

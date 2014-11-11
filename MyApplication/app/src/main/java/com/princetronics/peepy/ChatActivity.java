@@ -11,7 +11,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -19,11 +18,11 @@ import android.widget.Toast;
 /**
  * Created by Prince on 11/11/2014.
  */
-public class ChatActivity extends Activity {
+public class ChatActivity extends Activity implements SignOutCallback {
 
     private static final String TAG = "ChatActivity";
 
-    ListView listView ;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,33 +37,12 @@ public class ChatActivity extends Activity {
         }
     }
 
-    public static class ChatListFragment extends ListFragment {
-        // Defined Array values to show in ListView
-        String[] values = new String[] { "Message 1",
-                "Message 2",
-                "Message 3",
-                "Message 4",
-                "Message 5",
-                "Message 6",
-                "Message 7",
-        };
-
-        @Override
-        public void onListItemClick(ListView l, View v, int position, long id) {
-            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                                 Bundle savedInstanceState) {
-            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
-                    inflater.getContext(), android.R.layout.simple_list_item_1,
-                    values);
-            setListAdapter(adapter);
-            return super.onCreateView(inflater, container, savedInstanceState);
-        }
+    @Override
+    public void executeSignOut() {
+        Intent intent = new Intent(ChatActivity.this, SignInActivity.class);
+        startActivity(intent);
+        finish(); // Returns to sign in activity
     }
-
 
     @Override
     protected void onPause() {
@@ -104,9 +82,12 @@ public class ChatActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sign_out) {
-            Intent intent = new Intent(ChatActivity.this, SignInActivity.class);
-            startActivity(intent);
-            finish(); // Returns to sign in activity
+
+            FragmentManager fm = getFragmentManager();
+            SignOutDialogFragment signOutDFragment = new SignOutDialogFragment(ChatActivity.this);
+            // Show DialogFragment
+            signOutDFragment.show(fm, "Dialog Fragment");
+
             return true;
         } else if (id == R.id.about) {
             Intent intent = new Intent(ChatActivity.this, AboutActivity.class);
@@ -115,6 +96,33 @@ public class ChatActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public static class ChatListFragment extends ListFragment {
+        // Defined Array values to show in ListView
+        String[] values = new String[]{"Message 1",
+                "Message 2",
+                "Message 3",
+                "Message 4",
+                "Message 5",
+                "Message 6",
+                "Message 7",
+        };
+
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+        }
+
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    inflater.getContext(), android.R.layout.simple_list_item_1,
+                    values);
+            setListAdapter(adapter);
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
     }
 }
 
