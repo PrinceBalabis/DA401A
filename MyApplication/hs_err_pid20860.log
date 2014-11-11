@@ -1,0 +1,64 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 229376 bytes for CodeCache: no room for Interpreter
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   In 32 bit mode, the process size limit was hit
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Use 64 bit Java on a 64 bit OS
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (stubs.cpp:70), pid=20860, tid=23384
+#
+# JRE version:  (8.0_25-b18) (build )
+# Java VM: Java HotSpot(TM) Client VM (25.25-b02 mixed mode windows-x86 )
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0255b800):  JavaThread "Unknown thread" [_thread_in_vm, id=23384, stack(0x02560000,0x025b0000)]
+
+Stack: [0x02560000,0x025b0000],  sp=0x025ae76c,  free space=313k
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+V  [jvm.dll+0x19796b]
+V  [jvm.dll+0x1b26e7]
+C  [KERNELBASE.dll+0xb9e03]
+C  [ntdll.dll+0xa9e86]
+C  [ntdll.dll+0x50b91]
+C  0x00000000
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0255b800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=23384, stack(0x02560000,0x025b0000)]
+
+VM state:not at safepoint (not fully initialized)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (0 events):
+No events
+
+
+Dynamic libraries:

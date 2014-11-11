@@ -1,6 +1,7 @@
 package com.princetronics.peepy;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.text.Editable;
@@ -23,7 +24,7 @@ public class LoginActivity extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_signin);
 
         Log.d(TAG, "onCreate");
 
@@ -37,9 +38,14 @@ public class LoginActivity extends Activity {
         View.OnClickListener oclBtnSignIn = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Later add new Intent
+
                 Log.d(TAG, "Username: " + etUserName.getText().toString() +
                         " Password: " + etPassword.getText().toString());
+
+                Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+                intent.putExtra(TAG, etUserName.getText().toString());
+                intent.putExtra(TAG, etPassword.getText().toString());
+                startActivity(intent);
             }
         };
         btnSignIn.setOnClickListener(oclBtnSignIn);
@@ -50,7 +56,7 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Create Account button pressed");
                 // If the username or password field is empty then run toast error message
-                if(!etUserNameFilled || !etPasswordFilled){
+                if (!etUserNameFilled || !etPasswordFilled) {
                     Toast.makeText(getApplicationContext(),
                             "Please fill in both Peepy Name and Password",
                             Toast.LENGTH_SHORT).show();
@@ -102,11 +108,13 @@ public class LoginActivity extends Activity {
                     etUserNameFilled = true;
                     if (etPasswordFilled == true) {
                         btnSignIn.setEnabled(true);
+                        btnSignIn.getBackground().setAlpha(255);
                         Log.d(TAG, "Enabled sign in button");
                     }
                 } else if (s.length() == 0) {
                     etUserNameFilled = false;
                     btnSignIn.setEnabled(false);
+                    btnSignIn.getBackground().setAlpha(64);
                     Log.d(TAG, "Disabled sign in button");
                 }
             }
@@ -134,11 +142,13 @@ public class LoginActivity extends Activity {
                     etPasswordFilled = true;
                     if (etUserNameFilled == true) {
                         btnSignIn.setEnabled(true);
+                        btnSignIn.getBackground().setAlpha(255);
                         Log.d(TAG, "Enabled sign in button");
                     }
                 } else if (s.length() == 0) {
                     etPasswordFilled = false;
                     btnSignIn.setEnabled(false);
+                    btnSignIn.getBackground().setAlpha(64);
                     Log.d(TAG, "Disabled sign in button");
                 }
             }
@@ -158,6 +168,9 @@ public class LoginActivity extends Activity {
 
         Log.d(TAG, "onResume");
 
+        etPassword.setText("");
+        btnSignIn.setEnabled(false);
+        btnSignIn.getBackground().setAlpha(64);
     }
 
     @Override

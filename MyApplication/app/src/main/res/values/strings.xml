@@ -2,7 +2,6 @@
 <resources>
 
     <string name="app_name">Peepy</string>
-    <string name="action_settings">Settings</string>
 
     // Login screen
     <string name="et_username">Peepy Name</string>
@@ -10,5 +9,9 @@
 
     <string name="btn_signin">sign in</string>
     <string name="btn_createaccount">create account</string>
+
+    // Chat screen
+    <string name="sign_out">sign out</string>
+    <string name="about">about</string>
 
 </resources>
