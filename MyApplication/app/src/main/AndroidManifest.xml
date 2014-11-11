@@ -9,7 +9,7 @@
         android:theme="@android:style/Theme.NoTitleBar" >
 
         <activity
-            android:name="com.princetronics.peepy.LoginActivity"
+            android:name=".SignInActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
             <intent-filter>
@@ -17,26 +17,21 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+        <activity
+            android:name="com.princetronics.peepy.GroupActivity"
+            android:label="@string/app_name"
+            android:theme="@style/PeepyTheme">
         </activity>
         <activity
             android:name="com.princetronics.peepy.ChatActivity"
             android:label="@string/app_name"
             android:theme="@style/PeepyTheme">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.princetronics.peepy.AboutActivity"
             android:label="@string/app_name"
             android:theme="@android:style/Theme.NoTitleBar" >
-        <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
 
     </application>

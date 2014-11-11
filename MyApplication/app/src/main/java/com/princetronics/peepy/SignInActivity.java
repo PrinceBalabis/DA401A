@@ -13,7 +13,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class LoginActivity extends Activity {
+public class SignInActivity extends Activity {
 
     private static final String TAG = "LoginActivity";
 
@@ -42,10 +42,11 @@ public class LoginActivity extends Activity {
                 Log.d(TAG, "Username: " + etUserName.getText().toString() +
                         " Password: " + etPassword.getText().toString());
 
-                Intent intent = new Intent(LoginActivity.this, ChatActivity.class);
+                Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
                 intent.putExtra(TAG, etUserName.getText().toString());
                 intent.putExtra(TAG, etPassword.getText().toString());
                 startActivity(intent);
+                finish(); // Destroy Activity
             }
         };
         btnSignIn.setOnClickListener(oclBtnSignIn);
@@ -61,9 +62,18 @@ public class LoginActivity extends Activity {
                             "Please fill in both Peepy Name and Password",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    // Later add new Intent
                     Log.d(TAG, "Username: " + etUserName.getText().toString() +
                             " Password: " + etPassword.getText().toString());
+
+                    Toast.makeText(getApplicationContext(),
+                            "Welcome to Peepy, " + etUserName.getText().toString(),
+                            Toast.LENGTH_LONG).show();
+
+                    Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
+                    intent.putExtra(TAG, etUserName.getText().toString());
+                    intent.putExtra(TAG, etPassword.getText().toString());
+                    startActivity(intent);
+                    finish(); // Destroy Activity
                 }
             }
         };

@@ -15,28 +15,28 @@ import android.widget.Toast;
 /**
  * Created by Prince on 11/11/2014.
  */
-public class ChatActivity extends Activity {
+public class GroupActivity extends Activity {
 
-    private static final String TAG = "ChatActivity";
+    private static final String TAG = "GroupActivity";
 
     ListView listView ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_chat);
+        setContentView(R.layout.activity_group);
 
         // Get ListView object from xml
-        listView = (ListView) findViewById(R.id.list_chat);
+        listView = (ListView) findViewById(R.id.list_group);
 
         // Defined Array values to show in ListView
-        String[] values = new String[] { "Message 1",
-                "Message 2",
-                "Message 3",
-                "Message 4",
-                "Message 5",
-                "Message 6",
-                "Message 7",
+        String[] values = new String[] { "Group 1",
+                "Group 2",
+                "Group 3",
+                "Group 4",
+                "Group 5",
+                "Group 6",
+                "Group 7",
         };
 
         // Define a new Adapter
@@ -51,6 +51,40 @@ public class ChatActivity extends Activity {
 
         // Assign adapter to ListView
         listView.setAdapter(adapter);
+
+        // ListView Item Click Listener
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                // ListView Clicked item index
+                int itemPosition     = position;
+
+                // ListView Clicked item value
+                String  itemValue    = (String) listView.getItemAtPosition(position);
+
+                // Show Alert
+                Toast.makeText(getApplicationContext(),
+                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_SHORT)
+                        .show();
+
+                // Start Chat Activity
+                Intent intent = new Intent(GroupActivity.this, ChatActivity.class);
+                intent.putExtra(TAG, itemValue);
+                startActivity(intent);
+            }
+
+        });
+}
+
+    @Override
+    public void onBackPressed() {
+        //Simulate Home Button
+        Intent i = new Intent(Intent.ACTION_MAIN);
+        i.addCategory(Intent.CATEGORY_HOME);
+        startActivity(i);
     }
 
     @Override
@@ -91,12 +125,12 @@ public class ChatActivity extends Activity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.sign_out) {
-            Intent intent = new Intent(ChatActivity.this, SignInActivity.class);
+            Intent intent = new Intent(GroupActivity.this, SignInActivity.class);
             startActivity(intent);
             finish(); // Returns to sign in activity
             return true;
         } else if (id == R.id.about) {
-            Intent intent = new Intent(ChatActivity.this, AboutActivity.class);
+            Intent intent = new Intent(GroupActivity.this, AboutActivity.class);
             startActivity(intent);
             return true;
         }
