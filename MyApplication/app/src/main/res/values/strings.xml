@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">Peepy</string>
+    <string name="version_number">Version number: </string>
+    <string name="tv_about">This app was made for you to get your message out.</string>
 
     // Login screen
     <string name="et_username">Peepy Name</string>

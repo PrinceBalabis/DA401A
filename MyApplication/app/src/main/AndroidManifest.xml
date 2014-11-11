@@ -21,7 +21,7 @@
         <activity
             android:name="com.princetronics.peepy.ChatActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
+            android:theme="@style/PeepyTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -31,8 +31,8 @@
         <activity
             android:name="com.princetronics.peepy.AboutActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme">
-            <intent-filter>
+            android:theme="@android:style/Theme.NoTitleBar" >
+        <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
