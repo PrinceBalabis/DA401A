@@ -1,12 +1,16 @@
 package com.princetronics.peepy;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -26,9 +30,15 @@ public class ChatActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        // Get ListView object from xml
-        listView = (ListView) findViewById(R.id.list_chat);
+        FragmentManager fm = getFragmentManager();
 
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            ChatListFragment list = new ChatListFragment();
+            fm.beginTransaction().add(android.R.id.content, list).commit();
+        }
+    }
+
+    public static class ChatListFragment extends ListFragment {
         // Defined Array values to show in ListView
         String[] values = new String[] { "Message 1",
                 "Message 2",
@@ -39,19 +49,22 @@ public class ChatActivity extends Activity {
                 "Message 7",
         };
 
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+        }
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
-
-
-        // Assign adapter to ListView
-        listView.setAdapter(adapter);
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    inflater.getContext(), android.R.layout.simple_list_item_1,
+                    values);
+            setListAdapter(adapter);
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
     }
+
 
     @Override
     protected void onPause() {

@@ -1,13 +1,16 @@
 package com.princetronics.peepy;
 
 import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -26,9 +29,16 @@ public class GroupActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
-        // Get ListView object from xml
-        listView = (ListView) findViewById(R.id.list_group);
+        FragmentManager fm = getFragmentManager();
 
+        if (fm.findFragmentById(android.R.id.content) == null) {
+            GroupListFragment list = new GroupListFragment();
+            fm.beginTransaction().add(android.R.id.content, list).commit();
+        }
+
+    }
+
+    public static class GroupListFragment extends ListFragment {
         // Defined Array values to show in ListView
         String[] values = new String[] { "Group 1",
                 "Group 2",
@@ -39,45 +49,27 @@ public class GroupActivity extends Activity {
                 "Group 7",
         };
 
-        // Define a new Adapter
-        // First parameter - Context
-        // Second parameter - Layout for the row
-        // Third parameter - ID of the TextView to which the data is written
-        // Forth - the Array of data
+        @Override
+        public void onListItemClick(ListView l, View v, int position, long id) {
+            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
-                android.R.layout.simple_list_item_1, android.R.id.text1, values);
+            // Start Chat Activity
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra(TAG, position);
+            startActivity(intent);
+        }
 
+        @Override
+        public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                                 Bundle savedInstanceState) {
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(
+                    inflater.getContext(), android.R.layout.simple_list_item_1,
+                    values);
+            setListAdapter(adapter);
+            return super.onCreateView(inflater, container, savedInstanceState);
+        }
+    }
 
-        // Assign adapter to ListView
-        listView.setAdapter(adapter);
-
-        // ListView Item Click Listener
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view,
-                                    int position, long id) {
-
-                // ListView Clicked item index
-                int itemPosition     = position;
-
-                // ListView Clicked item value
-                String  itemValue    = (String) listView.getItemAtPosition(position);
-
-                // Show Alert
-                Toast.makeText(getApplicationContext(),
-                        "Position :"+itemPosition+"  ListItem : " +itemValue , Toast.LENGTH_SHORT)
-                        .show();
-
-                // Start Chat Activity
-                Intent intent = new Intent(GroupActivity.this, ChatActivity.class);
-                intent.putExtra(TAG, itemValue);
-                startActivity(intent);
-            }
-
-        });
-}
 
     @Override
     public void onBackPressed() {

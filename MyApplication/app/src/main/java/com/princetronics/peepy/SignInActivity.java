@@ -17,9 +17,9 @@ public class SignInActivity extends Activity {
 
     private static final String TAG = "LoginActivity";
 
-    private EditText etUserName, etPassword;
+    private EditText etEmail, etPassword;
     private Button btnSignIn, btnCreateAccount;
-    private boolean etUserNameFilled = false, etPasswordFilled = false;
+    private boolean etEmailFilled = false, etPasswordFilled = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,11 +39,11 @@ public class SignInActivity extends Activity {
             @Override
             public void onClick(View v) {
 
-                Log.d(TAG, "Username: " + etUserName.getText().toString() +
+                Log.d(TAG, "E-mail: " + etEmail.getText().toString() +
                         " Password: " + etPassword.getText().toString());
 
                 Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-                intent.putExtra(TAG, etUserName.getText().toString());
+                intent.putExtra(TAG, etEmail.getText().toString());
                 intent.putExtra(TAG, etPassword.getText().toString());
                 startActivity(intent);
                 finish(); // Destroy Activity
@@ -57,20 +57,20 @@ public class SignInActivity extends Activity {
             public void onClick(View v) {
                 Log.d(TAG, "Create Account button pressed");
                 // If the username or password field is empty then run toast error message
-                if (!etUserNameFilled || !etPasswordFilled) {
+                if (!etEmailFilled || !etPasswordFilled) {
                     Toast.makeText(getApplicationContext(),
                             "Please fill in both Peepy Name and Password",
                             Toast.LENGTH_SHORT).show();
                 } else {
-                    Log.d(TAG, "Username: " + etUserName.getText().toString() +
+                    Log.d(TAG, "Username: " + etEmail.getText().toString() +
                             " Password: " + etPassword.getText().toString());
 
                     Toast.makeText(getApplicationContext(),
-                            "Welcome to Peepy, " + etUserName.getText().toString(),
+                            "Welcome to Peepy, " + etEmail.getText().toString(),
                             Toast.LENGTH_LONG).show();
 
                     Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-                    intent.putExtra(TAG, etUserName.getText().toString());
+                    intent.putExtra(TAG, etEmail.getText().toString());
                     intent.putExtra(TAG, etPassword.getText().toString());
                     startActivity(intent);
                     finish(); // Destroy Activity
@@ -87,7 +87,7 @@ public class SignInActivity extends Activity {
         TextView myTextView = (TextView) findViewById(R.id.tv_appName);
         myTextView.setTypeface(typeFace);
 
-        etUserName.setTypeface(typeFace);
+        etEmail.setTypeface(typeFace);
         etPassword.setTypeface(typeFace);
 
         btnSignIn.setTypeface(typeFace);
@@ -96,8 +96,8 @@ public class SignInActivity extends Activity {
     }
 
     private void initEditTextListeners() {
-        etUserName = (EditText) findViewById(R.id.etUserName);
-        etUserName.addTextChangedListener(new TextWatcher() {
+        etEmail = (EditText) findViewById(R.id.etUserName);
+        etEmail.addTextChangedListener(new TextWatcher() {
 
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -115,14 +115,14 @@ public class SignInActivity extends Activity {
 
                 //If username and password has at least one character then enable sign in button
                 if (s.length() == 1) {
-                    etUserNameFilled = true;
+                    etEmailFilled = true;
                     if (etPasswordFilled == true) {
                         btnSignIn.setEnabled(true);
                         btnSignIn.getBackground().setAlpha(255);
                         Log.d(TAG, "Enabled sign in button");
                     }
                 } else if (s.length() == 0) {
-                    etUserNameFilled = false;
+                    etEmailFilled = false;
                     btnSignIn.setEnabled(false);
                     btnSignIn.getBackground().setAlpha(64);
                     Log.d(TAG, "Disabled sign in button");
@@ -150,7 +150,7 @@ public class SignInActivity extends Activity {
                 //If username and password has at least one character then enable sign in button
                 if (s.length() == 1) {
                     etPasswordFilled = true;
-                    if (etUserNameFilled == true) {
+                    if (etEmailFilled == true) {
                         btnSignIn.setEnabled(true);
                         btnSignIn.getBackground().setAlpha(255);
                         Log.d(TAG, "Enabled sign in button");

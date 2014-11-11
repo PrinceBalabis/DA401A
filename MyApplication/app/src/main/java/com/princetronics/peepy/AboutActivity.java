@@ -18,6 +18,9 @@ public class AboutActivity extends Activity {
         // Update fonts
         Typeface typeFace = Typeface.createFromAsset(getAssets(), "fonts/font200.ttf");
 
+        TextView myTextView = (TextView) findViewById(R.id.tv_appName);
+        myTextView.setTypeface(typeFace);
+
         TextView tvAbout = (TextView) findViewById(R.id.tvAbout);
         tvAbout.setTypeface(typeFace);
 

@@ -6,7 +6,7 @@
     <string name="tv_about">This app was made for you to get your message out.</string>
 
     // Login screen
-    <string name="et_username">Peepy Name</string>
+    <string name="et_email">Peepy Name</string>
     <string name="et_password">Password</string>
 
     <string name="btn_signin">sign in</string>
