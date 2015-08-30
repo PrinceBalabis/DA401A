@@ -18,6 +18,8 @@ import com.firebase.client.AuthData;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.util.Map;
+
 public class SignInActivity extends Activity implements SignInCallback {
 
     private static final String TAG = "LoginActivity";
@@ -193,13 +195,13 @@ public class SignInActivity extends Activity implements SignInCallback {
         if (etPassword.getText().toString().equals(confirmedPassword)) {
 
             //Firebase create user
-            mFirebase.createUser(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.ResultHandler() {
+            mFirebase.createUser(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
-                public void onSuccess() {
+                public void onSuccess(Map<String, Object> result) {
                     Toast.makeText(getApplicationContext(),
-                            "Welcome to Peepy, " + etEmail.getText().toString(),
+                            "Welcome to Peepy, " + result.get("email"),
                             Toast.LENGTH_LONG).show();
-
+                    Log.d(TAG, (String) result.get("email"));
                     Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
                     intent.putExtra(TAG, etEmail.getText().toString());
                     intent.putExtra(TAG, etPassword.getText().toString());
