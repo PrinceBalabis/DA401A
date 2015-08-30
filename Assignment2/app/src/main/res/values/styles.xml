@@ -1,0 +1,7 @@
+<resources>
+
+    <style name="PeepyTheme" parent="android:Theme.Holo.Light">
+        <item name="android:panelFullBackground">@color/peepy_background</item>
+    </style>
+
+</resources>

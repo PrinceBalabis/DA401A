@@ -1,0 +1,85 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context=".LoginActivity"
+    android:background="@color/peepy_background"
+    android:orientation="vertical"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
+
+
+    <fragment
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:name="princetronics.assignment2.LogoFragment"
+        android:id="@+id/fragment_logo"
+        tools:layout="@layout/logo_fragment" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textEmailAddress"
+            android:maxLines="1"
+            android:ems="10"
+            android:id="@+id/etUserName"
+            android:hint="@string/et_email"
+            android:textColor="@color/peepy_slogan"
+            android:layout_toEndOf="@+id/etPassword"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/etPassword"
+            android:layout_marginTop="20dp"
+            android:layout_alignEnd="@+id/etPassword"
+            android:layout_marginBottom="1dp" />
+
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:maxLines="1"
+            android:ems="10"
+            android:id="@+id/etPassword"
+            android:hint="@string/et_password"
+            android:textColor="@color/peepy_slogan"
+            android:layout_below="@+id/etUserName"
+            android:layout_centerHorizontal="true" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:text="@string/btn_signin"
+            android:enabled="false"
+            android:id="@+id/btnSignIn"
+            android:textColor="@color/peepy_slogan"
+            android:layout_gravity="center_horizontal"
+            android:layout_below="@+id/etPassword"
+            android:layout_alignStart="@+id/etPassword"
+            android:layout_alignEnd="@+id/etPassword"
+            android:layout_marginTop="8dp"
+            android:background="@drawable/rounded_edittext" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+        <Button
+            android:layout_width="fill_parent"
+            android:layout_height="50dp"
+            android:text="@string/btn_createaccount"
+            android:enabled="true"
+            android:id="@+id/btnCreateAccount"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@color/peepy_logo" />
+
+    </RelativeLayout>
+
+</LinearLayout>
