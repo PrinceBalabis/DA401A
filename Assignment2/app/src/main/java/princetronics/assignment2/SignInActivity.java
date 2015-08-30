@@ -14,6 +14,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.firebase.client.AuthData;
+import com.firebase.client.Firebase;
+import com.firebase.client.FirebaseError;
+
 public class SignInActivity extends Activity implements SignInCallback {
 
     private static final String TAG = "LoginActivity";
@@ -22,12 +26,18 @@ public class SignInActivity extends Activity implements SignInCallback {
     private Button btnSignIn, btnCreateAccount;
     private boolean etEmailFilled = false, etPasswordFilled = false;
 
+    Firebase mFirebase;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signin);
 
         Log.d(TAG, "onCreate");
+
+        //You need to set the Android context using Firebase.setAndroidContext() before using Firebase.
+        Firebase.setAndroidContext(this);
+        mFirebase = new Firebase("https://peepy.firebaseio.com");
 
         initButtons();
         initEditTextListeners();
@@ -39,15 +49,30 @@ public class SignInActivity extends Activity implements SignInCallback {
         View.OnClickListener oclBtnSignIn = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //Firebase authenticate user
+                mFirebase.authWithPassword(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.AuthResultHandler() {
+                    @Override
+                    public void onAuthenticated(AuthData authData) {
+                        Log.d(TAG, "E-mail: " + etEmail.getText().toString() +
+                                " Password: " + etPassword.getText().toString());
+                        Toast.makeText(getApplicationContext(),
+                                "Welcome back to Peepy, "+etEmail.getText().toString()+"!",
+                                Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
+                        intent.putExtra(TAG, etEmail.getText().toString());
+                        intent.putExtra(TAG, etPassword.getText().toString());
+                        startActivity(intent);
+                        finish(); // Destroy Activity
+                    }
 
-                Log.d(TAG, "E-mail: " + etEmail.getText().toString() +
-                        " Password: " + etPassword.getText().toString());
-
-                Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-                intent.putExtra(TAG, etEmail.getText().toString());
-                intent.putExtra(TAG, etPassword.getText().toString());
-                startActivity(intent);
-                finish(); // Destroy Activity
+                    @Override
+                    public void onAuthenticationError(FirebaseError error) {
+                        Toast.makeText(getApplicationContext(),
+                                error.getMessage()+"("+etEmail.getText().toString()+")",
+                                Toast.LENGTH_LONG).show();
+                        Log.d(TAG, error.getMessage());
+                    }
+                });
             }
         };
         btnSignIn.setOnClickListener(oclBtnSignIn);
@@ -70,6 +95,8 @@ public class SignInActivity extends Activity implements SignInCallback {
                     RepeatPasswordDialogFragment repeatPasswordDFragment = new RepeatPasswordDialogFragment(SignInActivity.this);
                     // Show DialogFragment
                     repeatPasswordDFragment.show(fm, "Dialog Fragment");
+
+
                 }
             }
         };
@@ -161,18 +188,35 @@ public class SignInActivity extends Activity implements SignInCallback {
         });
     }
 
+    // Method is run by RepeatPasswordDialog to compare the password written and the repeated one
     public void returnConfirmedPassword(String confirmedPassword) {
         if (etPassword.getText().toString().equals(confirmedPassword)) {
 
-            Toast.makeText(getApplicationContext(),
-                    "Welcome to Peepy, " + etEmail.getText().toString(),
-                    Toast.LENGTH_LONG).show();
+            //Firebase create user
+            mFirebase.createUser(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.ResultHandler() {
+                @Override
+                public void onSuccess() {
+                    Toast.makeText(getApplicationContext(),
+                            "Welcome to Peepy, " + etEmail.getText().toString(),
+                            Toast.LENGTH_LONG).show();
 
-            Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-            intent.putExtra(TAG, etEmail.getText().toString());
-            intent.putExtra(TAG, etPassword.getText().toString());
-            startActivity(intent);
-            finish(); // Destroy Activity
+                    Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
+                    intent.putExtra(TAG, etEmail.getText().toString());
+                    intent.putExtra(TAG, etPassword.getText().toString());
+
+                    startActivity(intent);
+                    finish(); // Destroy Activity
+                }
+
+                @Override
+                public void onError(FirebaseError error) {
+                    // Handle errors
+                    Toast.makeText(getApplicationContext(),
+                            error.getMessage()+"("+etEmail.getText().toString()+")",
+                            Toast.LENGTH_LONG).show();
+                    Log.d(TAG, error.getMessage());
+                }
+            });
         } else {
             Toast.makeText(getApplicationContext(),
                     "Wrong password repeated!",
@@ -197,7 +241,8 @@ public class SignInActivity extends Activity implements SignInCallback {
 //        btnSignIn.setEnabled(false);
 //        btnSignIn.getBackground().setAlpha(64);
     }
-//
+
+    //
     @Override
     protected void onDestroy() {
         super.onDestroy();
