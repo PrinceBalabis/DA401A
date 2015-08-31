@@ -3,7 +3,6 @@ package princetronics.assignment2;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.ListFragment;
-import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -33,8 +32,6 @@ import princetronics.assignment2.Data.Group;
 public class GroupActivity extends Activity implements SignOutCallback {
 
     private static final String TAG = "GroupActivity";
-
-    ListView listView;
 
     private GroupAdapter groupAdapter;
 
@@ -140,10 +137,14 @@ public class GroupActivity extends Activity implements SignOutCallback {
             mFirebaseGroups.addChildEventListener(new ChildEventListener() {
                 @Override
                 public void onChildAdded(DataSnapshot snapshot, String s) {
-                    // Add children to your list, and then notify the adapter of the changes
+                    // Read group object received from Firebase
                     Group group = snapshot.getValue(Group.class);
+
                     Log.d(TAG, "Group added!: "+ group.getName() + " ID: " + group.getId());
+
+                    // Add children to the list
                     groups.add(new Group(group.getId(), group.getName()));
+                    // Notify the adapter of the changes
                     groupAdapter.notifyDataSetChanged();
                 }
 
@@ -173,12 +174,13 @@ public class GroupActivity extends Activity implements SignOutCallback {
 
         @Override
         public void onListItemClick(ListView l, View v, int position, long id) {
-            Toast.makeText(getActivity(), "Position: " + position, Toast.LENGTH_SHORT).show();
+            Log.d(TAG, "Position: " + position);
 
             // Start Chat Activity
-//            Intent intent = new Intent(getActivity(), ChatActivity.class);
-//            intent.putExtra(TAG, position);
-//            startActivity(intent);
+            Intent intent = new Intent(getActivity(), ChatActivity.class);
+            intent.putExtra("name", groups.get(position).getName()); // Send group id to ChatActivity
+            intent.putExtra("id", groups.get(position).getId()); // Send group id to ChatActivity
+            startActivity(intent);
         }
     }
 
