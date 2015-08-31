@@ -28,8 +28,6 @@ public class SignInActivity extends Activity implements SignInCallback {
     private Button btnSignIn, btnCreateAccount;
     private boolean etEmailFilled = false, etPasswordFilled = false;
 
-    Firebase mFirebase;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,7 +37,6 @@ public class SignInActivity extends Activity implements SignInCallback {
 
         //You need to set the Android context using Firebase.setAndroidContext() before using Firebase.
         Firebase.setAndroidContext(this);
-        mFirebase = new Firebase("https://peepy.firebaseio.com");
 
         initButtons();
         initEditTextListeners();
@@ -52,6 +49,7 @@ public class SignInActivity extends Activity implements SignInCallback {
             @Override
             public void onClick(View v) {
                 //Firebase authenticate user
+                Firebase mFirebase = new Firebase("https://peepy.firebaseio.com/");
                 mFirebase.authWithPassword(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.AuthResultHandler() {
                     @Override
                     public void onAuthenticated(AuthData authData) {
@@ -195,13 +193,23 @@ public class SignInActivity extends Activity implements SignInCallback {
         if (etPassword.getText().toString().equals(confirmedPassword)) {
 
             //Firebase create user
-            mFirebase.createUser(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
+            final Firebase mFirebaseUsers = new Firebase("https://peepy.firebaseio.com/users");
+            mFirebaseUsers.createUser(etEmail.getText().toString(), etPassword.getText().toString(), new Firebase.ValueResultHandler<Map<String, Object>>() {
                 @Override
                 public void onSuccess(Map<String, Object> result) {
+
+                    // Set child of user to as firebase object, in order to make sure only
+                    // the user-child is used in this login instance.
+                    Firebase thisUserFirebase = mFirebaseUsers.child((String)result.get("uid"));
+                    // set ID stored as a child in the users-child
+                    thisUserFirebase.child("id").setValue((String)result.get("uid"));
+                    // set email stored as a child in the users-child
+                    thisUserFirebase.child("email").setValue(etEmail.getText().toString());
+
                     Toast.makeText(getApplicationContext(),
-                            "Welcome to Peepy, " + result.get("email"),
+                            "Welcome to Peepy, " + etEmail.getText().toString(),
                             Toast.LENGTH_LONG).show();
-                    Log.d(TAG, (String) result.get("email"));
+                    Log.d(TAG, etEmail.getText().toString());
                     Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
                     intent.putExtra(TAG, etEmail.getText().toString());
                     intent.putExtra(TAG, etPassword.getText().toString());

@@ -38,13 +38,13 @@ public class GroupActivity extends Activity implements SignOutCallback {
 
     private GroupAdapter groupAdapter;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
 
         FragmentManager fm = getFragmentManager();
-
         if (fm.findFragmentById(android.R.id.content) == null) {
             GroupListFragment list = new GroupListFragment();
             fm.beginTransaction().add(android.R.id.content, list).commit();
@@ -123,38 +123,48 @@ public class GroupActivity extends Activity implements SignOutCallback {
 
     public class GroupListFragment extends ListFragment {
 
-        Firebase mFirebase;
         private ArrayList<Group> groups = new ArrayList<Group>();
 
         @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
-//            mFirebase = new Firebase("https://peepy.firebaseio.com");
-//
-//            mFirebase.addChildEventListener(new ChildEventListener() {
-//                @Override
-//                public void onChildAdded(DataSnapshot snapshot, String s) {
-//                // Add children to your list, and then notify the adapter of the changes
-//                }
-//                @Override
-//                public void onChildChanged(DataSnapshot snapshot, String s) {
-//                }
-//                @Override
-//                public void onChildRemoved(DataSnapshot snapshot) {
-//                }
-//                @Override
-//                public void onChildMoved(DataSnapshot snapshot, String s) {
-//                }
-//                @Override
-//                public void onCancelled(FirebaseError firebaseError) {
-//                }
-//            });
+            Firebase mFirebaseGroups = new Firebase("https://peepy.firebaseio.com/groups");
 
-            groups.add(new Group("group1", "id1"));
-            groups.add(new Group("group2", "id2"));
+            //Add new test groups to firebase
+//            Firebase newGroupRef = mFirebaseGroups.push();
+//            String id = newGroupRef.getKey();
+//            Group testgroup = new Group(id, "Test Group");
+//            newGroupRef.setValue(testgroup);
 
-            GroupAdapter groupAdapter = new GroupAdapter(
+            mFirebaseGroups.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(DataSnapshot snapshot, String s) {
+                    // Add children to your list, and then notify the adapter of the changes
+                    Group group = snapshot.getValue(Group.class);
+                    Log.d(TAG, "Group added!: "+ group.getName() + " ID: " + group.getId());
+                    groups.add(new Group(group.getId(), group.getName()));
+                    groupAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void onChildChanged(DataSnapshot snapshot, String s) {
+                }
+
+                @Override
+                public void onChildRemoved(DataSnapshot snapshot) {
+                }
+
+                @Override
+                public void onChildMoved(DataSnapshot snapshot, String s) {
+                }
+
+                @Override
+                public void onCancelled(FirebaseError firebaseError) {
+                }
+            });
+
+            groupAdapter = new GroupAdapter(
                     inflater.getContext(), R.layout.item_group,
                     groups);
             setListAdapter(groupAdapter);
@@ -233,7 +243,7 @@ public class GroupActivity extends Activity implements SignOutCallback {
                     group_id.setText("ID: ");
                 }
                 if (group_iddata != null){
-                    group_iddata.setText("$" + i.getId());
+                    group_iddata.setText(i.getId());
                 }
             }
 
