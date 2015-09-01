@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">Assignment3</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="income">Income</string>
+    <string name="expenses">Expenses</string>
+    <string name="summary">Summary</string>
     <string name="action_settings">Settings</string>
 </resources>
