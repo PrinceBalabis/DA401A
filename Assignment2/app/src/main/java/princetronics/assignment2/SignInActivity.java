@@ -59,8 +59,7 @@ public class SignInActivity extends Activity implements SignInCallback {
                                 "Welcome back to Peepy, "+etEmail.getText().toString()+"!",
                                 Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(SignInActivity.this, GroupActivity.class);
-//                        intent.putExtra(TAG, etEmail.getText().toString());
-//                        intent.putExtra(TAG, etPassword.getText().toString());
+                        intent.putExtra("email", etEmail.getText().toString());
                         startActivity(intent);
                         finish(); // Destroy Activity
                     }

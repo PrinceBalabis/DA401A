@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.client.ChildEventListener;
 import com.firebase.client.DataSnapshot;
@@ -35,11 +34,15 @@ public class GroupActivity extends Activity implements SignOutCallback {
 
     private GroupAdapter groupAdapter;
 
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group);
+
+        Intent intent = getIntent();
+        email = intent.getStringExtra("email");
 
         FragmentManager fm = getFragmentManager();
         if (fm.findFragmentById(android.R.id.content) == null) {
@@ -178,8 +181,9 @@ public class GroupActivity extends Activity implements SignOutCallback {
 
             // Start Chat Activity
             Intent intent = new Intent(getActivity(), ChatActivity.class);
-            intent.putExtra("name", groups.get(position).getName()); // Send group id to ChatActivity
+            intent.putExtra("name", groups.get(position).getName()); // Send group name to ChatActivity
             intent.putExtra("id", groups.get(position).getId()); // Send group id to ChatActivity
+            intent.putExtra("email", email); // Send email
             startActivity(intent);
         }
     }

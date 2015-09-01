@@ -13,7 +13,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.LinearLayout;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -23,7 +24,11 @@ import com.firebase.client.DataSnapshot;
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
 import princetronics.assignment2.Data.ChatMessage;
 
@@ -37,14 +42,17 @@ public class ChatActivity extends Activity implements SignOutCallback {
     private ChatAdapter chatAdapter;
 
     private String groupID;
+    private String email;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        // Store group-ID to private variable
         Intent intent = getIntent();
+        email = intent.getStringExtra("email");
+
+        // Store group-ID to private variable
         groupID = intent.getStringExtra("id");
         Log.d(TAG, "Group-ID: " + groupID + "Name: " + intent.getStringExtra("name"));
         Toast.makeText(getApplicationContext(), "Group-Name: " + intent.getStringExtra("name"), Toast.LENGTH_SHORT).show();
@@ -127,13 +135,37 @@ public class ChatActivity extends Activity implements SignOutCallback {
         }
 
         @Override
-        public void onViewCreated (View view, Bundle savedInstanceState) {
+        public void onViewCreated(View view, Bundle savedInstanceState) {
             chatAdapter = new ChatAdapter(
                     getLayoutInflater().getContext(), R.layout.item_chatmessage,
                     chatMessages);
             View footerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.activity_chat_footer, null, false);
             getListView().addFooterView(footerView);
             setListAdapter(chatAdapter);
+
+            Button btnSend = (Button) findViewById(R.id.button_send);
+            View.OnClickListener oclBtnSend = new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d(TAG, "Send button pressed!");
+                    EditText etMessageBox = (EditText) findViewById(R.id.et_message_box);
+
+                    //Add new test chat message to chosen group
+                    Firebase mFirebaseChatMessages = new Firebase("https://peepy.firebaseio.com/messages/" + groupID);
+                    Firebase newChatMessageRef = mFirebaseChatMessages.push();
+                    String id = newChatMessageRef.getKey();
+
+                    SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd hh:mm");
+                    String format = s.format(new Date());
+
+                    ChatMessage testChatMessage = new ChatMessage(id,
+                            email, // From
+                            etMessageBox.getText().toString(), // Message
+                            format); // Time & date
+                    newChatMessageRef.setValue(testChatMessage);
+                }
+            };
+            btnSend.setOnClickListener(oclBtnSend);
         }
 
         @Override
@@ -141,16 +173,6 @@ public class ChatActivity extends Activity implements SignOutCallback {
                                  Bundle savedInstanceState) {
 
             Firebase mFirebaseChatMessages = new Firebase("https://peepy.firebaseio.com/messages/" + groupID);
-
-            //Add new test chat message to chosen group
-            Firebase newChatMessageRef = mFirebaseChatMessages.push();
-            String id = newChatMessageRef.getKey();
-            ChatMessage testChatMessage = new ChatMessage(id,
-                    "from",
-                    "message",
-                    "time");
-            newChatMessageRef.setValue(testChatMessage);
-
 
             mFirebaseChatMessages.addChildEventListener(new ChildEventListener() {
                 @Override
