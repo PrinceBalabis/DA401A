@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -126,6 +127,16 @@ public class ChatActivity extends Activity implements SignOutCallback {
         }
 
         @Override
+        public void onViewCreated (View view, Bundle savedInstanceState) {
+            chatAdapter = new ChatAdapter(
+                    getLayoutInflater().getContext(), R.layout.item_chatmessage,
+                    chatMessages);
+            View footerView = ((LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE)).inflate(R.layout.activity_chat_footer, null, false);
+            getListView().addFooterView(footerView);
+            setListAdapter(chatAdapter);
+        }
+
+        @Override
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
 
@@ -162,6 +173,9 @@ public class ChatActivity extends Activity implements SignOutCallback {
 
                     // Notify the adapter of the changes
                     chatAdapter.notifyDataSetChanged();
+
+                    // Scroll to bottom of list
+                    getListView().setSelection(chatAdapter.getCount() - 1);
                 }
 
                 @Override
@@ -181,10 +195,6 @@ public class ChatActivity extends Activity implements SignOutCallback {
                 }
             });
 
-            chatAdapter = new ChatAdapter(
-                    inflater.getContext(), R.layout.item_chatmessage,
-                    chatMessages);
-            setListAdapter(chatAdapter);
             return super.onCreateView(inflater, container, savedInstanceState);
         }
     }

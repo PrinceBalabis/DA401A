@@ -15,9 +15,11 @@
     <string name="tv_repeatPassword">Repeat password please</string>
     <string name="btn_confirmpassword">confirm password</string>
 
-    // Chat screen
+    // Chat/Group screen
     <string name="sign_out">sign out</string>
     <string name="about">about</string>
+    <string name="chat_message_box">message...</string>
+    <string name="chat_message_box_button">send</string>
 
     // Log out
     <string name="tv_logoutquestion">Really sign out?</string>
