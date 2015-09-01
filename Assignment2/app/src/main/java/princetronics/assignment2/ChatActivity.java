@@ -26,9 +26,7 @@ import com.firebase.client.FirebaseError;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import princetronics.assignment2.Data.ChatMessage;
 
@@ -163,6 +161,8 @@ public class ChatActivity extends Activity implements SignOutCallback {
                             etMessageBox.getText().toString(), // Message
                             format); // Time & date
                     newChatMessageRef.setValue(testChatMessage);
+
+                    etMessageBox.setText(""); // Clear Message box
                 }
             };
             btnSend.setOnClickListener(oclBtnSend);
@@ -197,7 +197,10 @@ public class ChatActivity extends Activity implements SignOutCallback {
                     chatAdapter.notifyDataSetChanged();
 
                     // Scroll to bottom of list
-                    getListView().setSelection(chatAdapter.getCount() - 1);
+                    int messageCount = chatAdapter.getCount();
+                    if (messageCount > 0) {
+                        getListView().setSelection(chatAdapter.getCount() - 1);
+                    }
                 }
 
                 @Override
