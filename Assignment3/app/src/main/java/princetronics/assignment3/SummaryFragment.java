@@ -1,8 +1,9 @@
 package princetronics.assignment3;
 
 import android.app.Fragment;
-import android.os.Bundle;
 import android.app.FragmentTransaction;
+import android.database.Cursor;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -10,11 +11,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SummaryFragment extends Fragment {
+    private static final String TAG = "SummaryFragment";
+
+    DBController dbController;
 
     public SummaryFragment() {
     }
@@ -23,8 +28,56 @@ public class SummaryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         setHasOptionsMenu(true);
+        getActivity().setTitle("Summary");
 
-        return inflater.inflate(R.layout.fragment_summary, container, false);
+        View root = inflater.inflate(R.layout.fragment_summary, container, false);
+        //Print data to view
+        TextView tv_totalIncome = (TextView) root.findViewById(R.id.tv_income_data);
+        TextView tv_totalExpense = (TextView) root.findViewById(R.id.tv_expense_data);
+        TextView tv_summary = (TextView) root.findViewById(R.id.tv_summary_data);
+
+        dbController = new DBController(getActivity());
+
+        //Read database
+        String totalIncome = addUpAmount(dbController.getIncomeAmount());
+        String totalExpense = addUpAmount(dbController.getExpenseAmount());
+        String summary = String.valueOf(Integer.parseInt(totalIncome)-Integer.parseInt(totalExpense));
+
+        //Log.d(TAG, String.valueOf(incomeTotal));
+        tv_totalIncome.setText(totalIncome +" kr"); // Print total income
+        tv_totalExpense.setText("-"+totalExpense +" kr"); // Print total expense
+        tv_summary.setText(summary +" kr"); // Print total income
+
+        return root;
+
+    }
+
+    private String addUpAmount(Cursor cursor){
+        int totalAmount = 0;
+
+        if (cursor.moveToFirst()) {
+            while (cursor.isAfterLast() == false) {
+                String amount = cursor.getString(0);
+
+                totalAmount += Integer.parseInt(amount);
+                cursor.moveToNext();
+            }
+        }
+        return String.valueOf(totalAmount);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        Log.d(TAG, "onResume");
+        dbController.open();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.d(TAG, "onPause");
+        dbController.close();
     }
 
     @Override

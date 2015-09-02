@@ -42,9 +42,11 @@ public class IncomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
+        getActivity().setTitle("Income");
+
         dbController = new DBController(getActivity());
 
-        View root =  inflater.inflate(R.layout.fragment_income, container, false);
+        View root = inflater.inflate(R.layout.fragment_income, container, false);
 
         incomesListView = (ListView) root.findViewById(R.id.list_income);
         incomesListView.setAdapter(adapter);

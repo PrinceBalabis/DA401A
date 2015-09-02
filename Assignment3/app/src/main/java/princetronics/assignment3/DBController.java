@@ -97,4 +97,26 @@ public class DBController extends SQLiteOpenHelper {
                 "Date", //Order by date column
                 null); // Limit
     }
+
+    public Cursor getIncomeAmount(){
+        return readDatabaseAmount("Incomes");
+    }
+
+    public Cursor getExpenseAmount(){
+        return readDatabaseAmount("Expenses");
+    }
+
+    private Cursor readDatabaseAmount(String tableName) {
+        return db.query(
+                tableName, //Table name
+                new String[]{"Amount"}, // Columns to get
+                null, // Selection
+                null, //SelectionArgs
+                null, //GroupBy
+                null,  //Having
+                null, //Order by
+                null); // Limit
+    }
+
+
 }

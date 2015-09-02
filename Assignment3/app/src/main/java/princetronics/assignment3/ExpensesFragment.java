@@ -40,6 +40,7 @@ public class ExpensesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        getActivity().setTitle("Expense");
 
         dbController = new DBController(getActivity());
 
@@ -159,7 +160,7 @@ public class ExpensesFragment extends Fragment {
             ViewHolder holder = (ViewHolder) view.getTag();
 
             holder.date.setText(cursor.getString(1));
-            holder.amount.setText(cursor.getString(2) + " kr");
+            holder.amount.setText("-"+cursor.getString(2) + " kr");
             holder.title.setText(cursor.getString(3));
         }
 
