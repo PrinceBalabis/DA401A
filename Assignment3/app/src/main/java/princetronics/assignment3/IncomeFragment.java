@@ -129,12 +129,16 @@ public class IncomeFragment extends Fragment {
 
     private class IncomeAdapter extends CursorAdapter {
 
+        private static final String TAG = "IncomeAdapter";
+
         public IncomeAdapter(Context context, Cursor c, boolean autoRequery) {
             super(context, c, autoRequery);
+            Log.d(TAG, "Constructor");
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            Log.d(TAG, "newView");
             View root = LayoutInflater.from(context).inflate(R.layout.row_income, parent, false);
 
             ViewHolder holder = new ViewHolder();
@@ -150,6 +154,7 @@ public class IncomeFragment extends Fragment {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            Log.d(TAG, "bindView");
             ViewHolder holder = (ViewHolder) view.getTag();
 
             holder.date.setText(cursor.getString(1));

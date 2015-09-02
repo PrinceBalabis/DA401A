@@ -45,13 +45,15 @@ public class ExpensesFragment extends Fragment {
 
         View root =  inflater.inflate(R.layout.fragment_expenses, container, false);
 
+        setHasOptionsMenu(true);
+
         expensesListView = (ListView) root.findViewById(R.id.list_expense);
         expensesListView.setAdapter(adapter);
 
-        setHasOptionsMenu(true);
-
         return root;
     }
+
+
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
@@ -91,7 +93,7 @@ public class ExpensesFragment extends Fragment {
             AddFragment addDFragment = new AddFragment();
             // Supply num input as an argument.
             Bundle args = new Bundle();
-            args.putString("type", "income");
+            args.putString("type", "expense");
             addDFragment.setArguments(args);
             addDFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
                 @Override
@@ -128,12 +130,16 @@ public class ExpensesFragment extends Fragment {
 
     private class ExpenseAdapter extends CursorAdapter {
 
+        private static final String TAG = "ExpenseAdapter";
+
         public ExpenseAdapter(Context context, Cursor c, boolean autoRequery) {
             super(context, c, autoRequery);
+            Log.d(TAG, "Constructor");
         }
 
         @Override
         public View newView(Context context, Cursor cursor, ViewGroup parent) {
+            Log.d(TAG, "newView");
             View root = LayoutInflater.from(context).inflate(R.layout.row_expense, parent, false);
 
             ViewHolder holder = new ViewHolder();
@@ -149,6 +155,7 @@ public class ExpensesFragment extends Fragment {
 
         @Override
         public void bindView(View view, Context context, Cursor cursor) {
+            Log.d(TAG, "bindView");
             ViewHolder holder = (ViewHolder) view.getTag();
 
             holder.date.setText(cursor.getString(1));

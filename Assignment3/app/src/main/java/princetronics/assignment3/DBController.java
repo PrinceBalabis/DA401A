@@ -19,14 +19,14 @@ public class DBController extends SQLiteOpenHelper {
     private static final String CREATETABLEINCOMES = "CREATE TABLE IF NOT EXISTS Incomes" +
             "(_id INTEGER PRIMARY KEY, " +
             "Date TEXT, " +
-            "Amount TEXT" +
+            "Amount TEXT, " +
             "title TEXT" +
             ")";
 
     private static final String CREATETABLEEXPENSES = "CREATE TABLE IF NOT EXISTS Expenses" +
             "(_id INTEGER PRIMARY KEY, " +
             "Date TEXT, " +
-            "Amount TEXT" +
+            "Amount TEXT, " +
             "title TEXT" +
             ")";
 
@@ -61,21 +61,21 @@ public class DBController extends SQLiteOpenHelper {
     }
 
     public long addIncome(String title, String amount) {
-        return add(title, amount);
+        return add(title, amount, "Incomes");
     }
 
     public long addExpense(String title, String amount) {
-        return add(title, amount);
+        return add(title, amount, "Expenses");
     }
 
-    private long add(String title, String amount) {
+    private long add(String title, String amount, String table) {
         ContentValues values = new ContentValues();
         SimpleDateFormat s = new SimpleDateFormat("yyyy-MM-dd");
         String date = s.format(new Date());
         values.put("Date", date);
         values.put("Amount", amount);
         values.put("Title", title);
-        return db.insert("Incomes", null, values);
+        return db.insert(table, null, values);
     }
 
     public Cursor getIncomes() {
