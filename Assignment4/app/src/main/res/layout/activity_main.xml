@@ -24,36 +24,36 @@
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Previous"
-        android:id="@+id/button"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/tv_status" />
+        android:text="&lt;&lt;"
+        android:id="@+id/btn_previous"
+        android:layout_below="@+id/tv_status"
+        android:layout_toStartOf="@+id/btn_stop" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Play/Pause"
-        android:id="@+id/button2"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/button" />
+        android:id="@+id/btn_play_pause"
+        android:layout_below="@+id/btn_stop"
+        android:layout_centerHorizontal="true" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Next"
-        android:id="@+id/button3"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+        android:text=">>"
+        android:id="@+id/btn_next"
+        android:layout_below="@+id/tv_status"
+        android:layout_toEndOf="@+id/btn_stop" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stop"
-        android:id="@+id/button4"
-        android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/button3" />
+        android:id="@+id/btn_stop"
+        android:layout_below="@+id/btn_previous"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
