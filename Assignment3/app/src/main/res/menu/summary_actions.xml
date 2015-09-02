@@ -1,0 +1,17 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/menu_income"
+        android:orderInCategory="100"
+        android:title="@string/income"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_expenses"
+        android:orderInCategory="100"
+        android:title="@string/expenses"
+        android:showAsAction="never" />
+    <item
+        android:id="@+id/menu_summary"
+        android:orderInCategory="100"
+        android:title="@string/summary"
+        android:showAsAction="never" />
+</menu>

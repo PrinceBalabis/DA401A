@@ -38,8 +38,6 @@ public class DBController extends SQLiteOpenHelper {
 
         Log.d(TAG, "Constructor");
         db = context.openOrCreateDatabase("Assignment3", context.MODE_PRIVATE, null); // Create or open already existing database
-        //db.execSQL("CREATE TABLE IF NOT EXISTS Incomes(_id VARCHAR,Date VARCHAR,Amount VARCHAR,Title VARCHAR);"); // Create Incomes table
-        //db.execSQL("CREATE TABLE IF NOT EXISTS Expenses(_id VARCHAR,Date VARCHAR,Amount VARCHAR,Title VARCHAR);"); // Create Expenses table
 
         db.execSQL(CREATETABLEINCOMES);
         db.execSQL(CREATETABLEEXPENSES);

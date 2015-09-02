@@ -9,8 +9,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="date"
-        android:id="@+id/tv_income_date"
-        android:layout_below="@+id/tv_income_title"
+        android:id="@+id/tv_expense_date"
+        android:layout_below="@+id/tv_expense_title"
         android:layout_alignParentEnd="true" />
 
     <TextView
@@ -18,8 +18,8 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="amount"
-        android:id="@+id/tv_income_amount"
-        android:layout_below="@+id/tv_income_title"
+        android:id="@+id/tv_expense_amount"
+        android:layout_below="@+id/tv_expense_title"
         android:layout_alignParentStart="true" />
 
     <TextView
@@ -27,7 +27,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="title"
-        android:id="@+id/tv_income_title"
+        android:id="@+id/tv_expense_title"
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true" />
 </RelativeLayout>

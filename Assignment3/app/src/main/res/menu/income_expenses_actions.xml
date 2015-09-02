@@ -1,0 +1,23 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/action_add"
+        android:icon="@drawable/add"
+        android:title="@string/action_add"
+        app:showAsAction="ifRoom" />
+    <!-- Settings, should always be in the overflow -->
+    <item
+        android:id="@+id/menu_income"
+        android:orderInCategory="100"
+        android:title="@string/income"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_expenses"
+        android:orderInCategory="100"
+        android:title="@string/expenses"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/menu_summary"
+        android:orderInCategory="100"
+        android:title="@string/summary"
+        app:showAsAction="never" />
+</menu>
