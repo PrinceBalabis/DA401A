@@ -1,6 +1,7 @@
 package princetronics.assignment3;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -85,6 +86,23 @@ public class ExpensesFragment extends Fragment {
             fragmentTransaction.replace(R.id.fragment_container, new SummaryFragment(), "SummaryFragment");
             fragmentTransaction.commit();
             return true;
+        } else if(id == R.id.action_add) {
+            FragmentManager fm = getFragmentManager();
+            AddFragment addDFragment = new AddFragment();
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putString("type", "income");
+            addDFragment.setArguments(args);
+            addDFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Cursor c = dbController.getExpenses();
+                    adapter = new ExpenseAdapter(getActivity(), c, true);
+                    expensesListView.setAdapter(adapter);
+                }
+            });
+            addDFragment.show(fm, "Dialog Fragment");// Show DialogFragment
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
@@ -93,10 +111,10 @@ public class ExpensesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         dbController.open();
 
         Cursor c = dbController.getExpenses();
-        Log.d("DFGKJSDBFGJKSDHFDKFG", String.valueOf(c.getCount()));
         adapter = new ExpenseAdapter(getActivity(), c, true);
         expensesListView.setAdapter(adapter);
     }
@@ -104,6 +122,7 @@ public class ExpensesFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         dbController.close();
     }
 

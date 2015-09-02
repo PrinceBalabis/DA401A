@@ -1,6 +1,8 @@
 package princetronics.assignment3;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -87,9 +89,20 @@ public class IncomeFragment extends Fragment {
             return true;
         } else if(id == R.id.action_add) {
             FragmentManager fm = getFragmentManager();
-            AddFragment addDFragment = new AddFragment(getActivity());
-            // Show DialogFragment
-            addDFragment.show(fm, "Dialog Fragment");
+            AddFragment addDFragment = new AddFragment();
+            // Supply num input as an argument.
+            Bundle args = new Bundle();
+            args.putString("type", "income");
+            addDFragment.setArguments(args);
+            addDFragment.setOnDismissListener(new DialogInterface.OnDismissListener() {
+                @Override
+                public void onDismiss(DialogInterface dialog) {
+                    Cursor c = dbController.getIncomes();
+                    adapter = new IncomeAdapter(getActivity(), c, true);
+                    incomesListView.setAdapter(adapter);
+                }
+            });
+            addDFragment.show(fm, "Dialog Fragment");// Show DialogFragment
             return true;
         }
 
@@ -99,6 +112,7 @@ public class IncomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume");
         dbController.open();
 
         Cursor c = dbController.getIncomes();
@@ -109,6 +123,7 @@ public class IncomeFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
+        Log.d(TAG, "onPause");
         dbController.close();
     }
 

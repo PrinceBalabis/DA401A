@@ -7,6 +7,5 @@
     <string name="action_add">Add</string>
     <string name="et_Amount">Amount</string>
     <string name="et_Title">Title</string>
-    <string name="addNew">Add new</string>
     <string name="btn_add">Add</string>
 </resources>
