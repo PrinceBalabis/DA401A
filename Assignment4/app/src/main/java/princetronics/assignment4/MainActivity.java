@@ -8,12 +8,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity {
 
     private TextView tvSongTitle, tvStatus;
-
     private MyMediaPlayer mediaPlayer;
+    private KnockSensor knockSensor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
         viewsInit();
         buttonListenersInit();
+        knockSensor = new KnockSensor(this);
     }
 
     @Override
@@ -48,8 +50,11 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
+
+
     // Draw view
-    void viewsInit() {
+    private void viewsInit() {
         tvSongTitle = (TextView) findViewById(R.id.tv_songtitle);
         tvStatus = (TextView) findViewById(R.id.tv_status);
 
@@ -58,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // Initialize button listeners
-    void buttonListenersInit() {
+    private void buttonListenersInit() {
         Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
         View.OnClickListener oclBtnPlayPause = new View.OnClickListener() {
             @Override
@@ -101,36 +106,41 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    void togglePlayPause() {
+    public void togglePlayPause() {
         Log.d("MainActivity", "togglePlayPause");
         boolean isPlaying = mediaPlayer.togglePlayPause();
 
         if (isPlaying) {
             Log.d("Button", "Song is unpaused");
             tvStatus.setText("Playing");
+            Toast.makeText(this, "Playing song", Toast.LENGTH_SHORT).show();
         } else {
             Log.d("Button", "Song is paused");
             tvStatus.setText("Paused");
+            Toast.makeText(this, "Paused song", Toast.LENGTH_SHORT).show();
         }
     }
 
-    void stopSong() {
+    public void stopSong() {
         Log.d("MainActivity", "stopSong");
         mediaPlayer.stopSong();
         tvStatus.setText("Stopped");
+        Toast.makeText(this, "Stopped song", Toast.LENGTH_SHORT).show();
     }
 
-    void playNextSong() {
+    public void playNextSong() {
         Log.d("MainActivity", "playNextSong");
         String songTitle = mediaPlayer.playNextSong();
         tvSongTitle.setText(songTitle);
         tvStatus.setText("Playing");
+        Toast.makeText(this, "Playing next song", Toast.LENGTH_SHORT).show();
     }
 
-    void playPreviousSong() {
+    public void playPreviousSong() {
         Log.d("MainActivity", "playPreviousSong");
         String songTitle = mediaPlayer.playPreviousSong();
         tvSongTitle.setText(songTitle);
         tvStatus.setText("Playing");
+        Toast.makeText(this, "Playing previous song", Toast.LENGTH_SHORT).show();
     }
 }

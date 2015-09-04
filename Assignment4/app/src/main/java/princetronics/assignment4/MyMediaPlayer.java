@@ -23,26 +23,27 @@ public class MyMediaPlayer {
         playSongInPlaylist(playlistPosition); // Start playing
     }
 
-    void customPlaylistInit() {
+    private void customPlaylistInit() {
         // Load songs
         playlistID[0] = R.raw.swedens_national_anthem;
         playlistID[1] = R.raw.denmarks_national_anthem;
         playlistID[2] = R.raw.finlands_national_anthem;
     }
 
-    void playSongInPlaylist(int position) {
+    private void playSongInPlaylist(int position) {
         playlistPosition = position;
         mediaPlayer = MediaPlayer.create(context, playlistID[playlistPosition]); // Load song
+        mediaPlayer.setLooping(true); // Enable looping
         mediaPlayer.start(); // Start playing song
     }
 
     // returns current song title
-    String getCurrentSongTitle() {
+    public String getCurrentSongTitle() {
         return songTitles[playlistPosition];
     }
 
     // returns false if paused, true if currently playing
-    boolean togglePlayPause() {
+    public boolean togglePlayPause() {
         if (isPlaying) {
             mediaPlayer.pause();
             isPlaying = false;
@@ -54,13 +55,8 @@ public class MyMediaPlayer {
         }
     }
 
-    public void onPreparedListener(MediaPlayer mediaplayer) {
-        // We now have buffered enough to be able to play
-        mediaPlayer.start();
-    }
-
     // Returns song title
-    String playNextSong() {
+    public String playNextSong() {
         mediaPlayer.stop(); // Stop current song
 
         // Go to next song or reset position to first song if position is at last song
@@ -74,7 +70,7 @@ public class MyMediaPlayer {
         return songTitles[playlistPosition];
     }
 
-    String playPreviousSong() {
+    public String playPreviousSong() {
         mediaPlayer.stop(); // Stop current song
 
         // Go to next song or reset position to first song if position is at last song
@@ -88,7 +84,7 @@ public class MyMediaPlayer {
         return songTitles[playlistPosition];
     }
 
-    void stopSong() {
+    public void stopSong() {
         mediaPlayer.pause(); // Pause song
         mediaPlayer.seekTo(0); // Rewind to start of song
         isPlaying = false;
