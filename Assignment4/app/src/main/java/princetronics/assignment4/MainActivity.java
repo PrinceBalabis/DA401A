@@ -1,8 +1,7 @@
 package princetronics.assignment4;
 
-import android.media.MediaPlayer;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -24,6 +23,7 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayer = new MyMediaPlayer(this);
 
         viewsInit();
+        buttonListenersInit();
     }
 
     @Override
@@ -48,27 +48,23 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    // Draw view
     void viewsInit() {
         tvSongTitle = (TextView) findViewById(R.id.tv_songtitle);
         tvStatus = (TextView) findViewById(R.id.tv_status);
 
         tvSongTitle.setText(mediaPlayer.getCurrentSongTitle()); // draw song title in app
         tvStatus.setText("Playing"); // Update media player status
+    }
 
+    // Initialize button listeners
+    void buttonListenersInit() {
         Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
         View.OnClickListener oclBtnPlayPause = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Play/pause button pressed!");
-                boolean isPlaying = mediaPlayer.togglePlayPause();
-
-                if (isPlaying){
-                    Log.d("Button", "Song is unpaused");
-                    tvStatus.setText("Playing");
-                }else {
-                    Log.d("Button", "Song is paused");
-                    tvStatus.setText("Paused");
-                }
+                togglePlayPause();
             }
         };
         btnPlayPause.setOnClickListener(oclBtnPlayPause);
@@ -77,10 +73,7 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener oclBtnPrevious = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Button", "Previous button pressed!");
-                String songTitle = mediaPlayer.playPreviousSong();
-                tvSongTitle.setText(songTitle);
-                tvStatus.setText("Playing");
+                playPreviousSong();
             }
         };
         btnPrevious.setOnClickListener(oclBtnPrevious);
@@ -90,9 +83,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Next button pressed!");
-                String songTitle = mediaPlayer.playNextSong();
-                tvSongTitle.setText(songTitle);
-                tvStatus.setText("Playing");
+                playNextSong();
             }
         };
         btnNext.setOnClickListener(oclBtnNext);
@@ -103,10 +94,43 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Stop button pressed!");
-                mediaPlayer.stopSong();
-                tvStatus.setText("Stopped");
+                stopSong();
             }
         };
         btnStop.setOnClickListener(oclBtnStop);
+    }
+
+
+    void togglePlayPause() {
+        Log.d("MainActivity", "togglePlayPause");
+        boolean isPlaying = mediaPlayer.togglePlayPause();
+
+        if (isPlaying) {
+            Log.d("Button", "Song is unpaused");
+            tvStatus.setText("Playing");
+        } else {
+            Log.d("Button", "Song is paused");
+            tvStatus.setText("Paused");
+        }
+    }
+
+    void stopSong() {
+        Log.d("MainActivity", "stopSong");
+        mediaPlayer.stopSong();
+        tvStatus.setText("Stopped");
+    }
+
+    void playNextSong() {
+        Log.d("MainActivity", "playNextSong");
+        String songTitle = mediaPlayer.playNextSong();
+        tvSongTitle.setText(songTitle);
+        tvStatus.setText("Playing");
+    }
+
+    void playPreviousSong() {
+        Log.d("MainActivity", "playPreviousSong");
+        String songTitle = mediaPlayer.playPreviousSong();
+        tvSongTitle.setText(songTitle);
+        tvStatus.setText("Playing");
     }
 }
