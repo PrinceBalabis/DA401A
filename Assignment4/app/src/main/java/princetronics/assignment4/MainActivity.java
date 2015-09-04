@@ -12,21 +12,18 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    private MediaPlayer mediaPlayers[] = new MediaPlayer[3];
-    private String songNames[] = {"Swedens National Anthem","Denmarks National Anthem","Finlands National Anthem"};
-    private int playlistPosition = 0;
+    private TextView tvSongTitle, tvStatus;
 
-    private TextView tvSongName, tvStatus;
+    private MyMediaPlayer mediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mediaPlayer = new MyMediaPlayer(this);
 
         viewsInit();
-
-        mediaPlayerInit();
     }
 
     @Override
@@ -51,35 +48,27 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    void mediaPlayerInit() {
-        // Load songs
-        mediaPlayers[0] = MediaPlayer.create(this, R.raw.swedens_national_anthem);
-        mediaPlayers[1] = MediaPlayer.create(this, R.raw.denmarks_national_anthem);
-        mediaPlayers[2] = MediaPlayer.create(this, R.raw.finlands_national_anthem);
-
-        tvSongName.setText(songNames[playlistPosition]); // draw song title in app
-
-        for(int i = 0; i< 3; i++){
-            mediaPlayers[i].setLooping(true); // Enable music looping for each song
-        }
-
-        tvStatus.setText("Playing"); // Update media player status
-
-        mediaPlayers[0].start(); // Start playing first song
-    }
-
     void viewsInit() {
-        tvSongName = (TextView) findViewById(R.id.tv_songname);
+        tvSongTitle = (TextView) findViewById(R.id.tv_songtitle);
         tvStatus = (TextView) findViewById(R.id.tv_status);
+
+        tvSongTitle.setText(mediaPlayer.getCurrentSongTitle()); // draw song title in app
+        tvStatus.setText("Playing"); // Update media player status
 
         Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
         View.OnClickListener oclBtnPlayPause = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Play/pause button pressed!");
+                boolean isPlaying = mediaPlayer.togglePlayPause();
 
+                if (isPlaying){
+                    Log.d("Button", "Song is unpaused");
+                    tvStatus.setText("Playing");
+                }else {
+                    Log.d("Button", "Song is paused");
+                    tvStatus.setText("Paused");
+                }
             }
         };
         btnPlayPause.setOnClickListener(oclBtnPlayPause);
@@ -98,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         View.OnClickListener oclBtnNext = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Button", "NExt button pressed!");
+                Log.d("Button", "Next button pressed!");
 
             }
         };
         btnNext.setOnClickListener(oclBtnNext);
 
 
-        Button btnStop = (Button) findViewById(R.id.btn_next);
+        Button btnStop = (Button) findViewById(R.id.btn_stop);
         View.OnClickListener oclBtnStop = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
