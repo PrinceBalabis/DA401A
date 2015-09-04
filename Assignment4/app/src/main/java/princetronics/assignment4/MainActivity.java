@@ -1,12 +1,13 @@
 package princetronics.assignment4;
 
-import android.graphics.drawable.Drawable;
 import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.SurfaceHolder;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
@@ -15,7 +16,7 @@ public class MainActivity extends AppCompatActivity {
     private String songNames[] = {"Swedens National Anthem","Denmarks National Anthem","Finlands National Anthem"};
     private int playlistPosition = 0;
 
-    private TextView tv_songName;
+    private TextView tvSongName, tvStatus;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,9 +51,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    void viewsInit() {
-        tv_songName = (TextView) findViewById(R.id.tv_songname);
-    }
+
 
     void mediaPlayerInit() {
         // Load songs
@@ -60,13 +59,60 @@ public class MainActivity extends AppCompatActivity {
         mediaPlayers[1] = MediaPlayer.create(this, R.raw.denmarks_national_anthem);
         mediaPlayers[2] = MediaPlayer.create(this, R.raw.finlands_national_anthem);
 
-        tv_songName.setText(songNames[playlistPosition]); // draw song title in app
+        tvSongName.setText(songNames[playlistPosition]); // draw song title in app
 
         for(int i = 0; i< 3; i++){
             mediaPlayers[i].setLooping(true); // Enable music looping for each song
         }
 
-        mediaPlayers[0].start(); // Play audio
+        tvStatus.setText("Playing"); // Update media player status
+
+        mediaPlayers[0].start(); // Start playing first song
     }
 
+    void viewsInit() {
+        tvSongName = (TextView) findViewById(R.id.tv_songname);
+        tvStatus = (TextView) findViewById(R.id.tv_status);
+
+        Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
+        View.OnClickListener oclBtnPlayPause = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Button", "Play/pause button pressed!");
+
+            }
+        };
+        btnPlayPause.setOnClickListener(oclBtnPlayPause);
+
+        Button btnPrevious = (Button) findViewById(R.id.btn_previous);
+        View.OnClickListener oclBtnPrevious = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Button", "Previous button pressed!");
+
+            }
+        };
+        btnPrevious.setOnClickListener(oclBtnPrevious);
+
+        Button btnNext = (Button) findViewById(R.id.btn_next);
+        View.OnClickListener oclBtnNext = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Button", "NExt button pressed!");
+
+            }
+        };
+        btnNext.setOnClickListener(oclBtnNext);
+
+
+        Button btnStop = (Button) findViewById(R.id.btn_next);
+        View.OnClickListener oclBtnStop = new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("Button", "Stop button pressed!");
+
+            }
+        };
+        btnStop.setOnClickListener(oclBtnStop);
+    }
 }
