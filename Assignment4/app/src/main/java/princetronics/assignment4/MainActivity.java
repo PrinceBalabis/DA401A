@@ -21,8 +21,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mediaPlayer = new MyMediaPlayer(this); // Start media player
-        viewsInit(); // initialize views
+        mediaPlayer = new MyMediaPlayer(this);
+
+        viewsInit();
     }
 
     @Override
@@ -54,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
         tvSongTitle.setText(mediaPlayer.getCurrentSongTitle()); // draw song title in app
         tvStatus.setText("Playing"); // Update media player status
 
-        final Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
-        btnPlayPause.setText("Pause");
+        Button btnPlayPause = (Button) findViewById(R.id.btn_play_pause);
         View.OnClickListener oclBtnPlayPause = new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -65,11 +65,9 @@ public class MainActivity extends AppCompatActivity {
                 if (isPlaying){
                     Log.d("Button", "Song is unpaused");
                     tvStatus.setText("Playing");
-                    btnPlayPause.setText("Pause");
                 }else {
                     Log.d("Button", "Song is paused");
                     tvStatus.setText("Paused");
-                    btnPlayPause.setText("Play");
                 }
             }
         };
@@ -90,8 +88,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Next button pressed!");
-                mediaPlayer.playNextSong();
-                tvSongTitle.setText(mediaPlayer.getCurrentSongTitle()); // draw song title in app
+
             }
         };
         btnNext.setOnClickListener(oclBtnNext);
