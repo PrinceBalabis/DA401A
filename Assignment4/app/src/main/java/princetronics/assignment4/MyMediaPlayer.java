@@ -8,28 +8,33 @@ import android.media.MediaPlayer;
  */
 public class MyMediaPlayer {
 
-    private MediaPlayer mediaPlayers[] = new MediaPlayer[3];
+    private MediaPlayer mediaPlayer = new MediaPlayer();
+    private int amountOfSongs = 3; // Amount of songs in app
+    private int playlistID[] = new int[amountOfSongs];
     private String songTitles[] = {"Swedens National Anthem", "Denmarks National Anthem", "Finlands National Anthem"};
-    private int playlistPosition = 0;
+    private int playlistPosition = 0; // Start position in playlist
     private Context context;
-
+    private boolean isPlaying = true;
 
     public MyMediaPlayer(Context context) {
         this.context = context;
 
-        // Load song
-        mediaPlayers[0] = MediaPlayer.create(context, R.raw.swedens_national_anthem);
-        mediaPlayers[1] = MediaPlayer.create(context, R.raw.denmarks_national_anthem);
-        mediaPlayers[2] = MediaPlayer.create(context, R.raw.finlands_national_anthem);
-
-        // Enable looping for all songs
-        for (int i = 0; i < 3; i++) {
-            mediaPlayers[i].setLooping(true); // Enable music looping for each song
-        }
-
-        mediaPlayers[playlistPosition].start(); // Start playing first song
+        customPlaylistInit(); // Initialize playlist
+        playSongInPlaylist(playlistPosition); // Start playing
     }
 
+    void customPlaylistInit() {
+        // Load songs
+        playlistID[0] = R.raw.swedens_national_anthem;
+        playlistID[1] = R.raw.denmarks_national_anthem;
+        playlistID[2] = R.raw.finlands_national_anthem;
+    }
+
+    void playSongInPlaylist(int position) {
+        playlistPosition = position;
+        mediaPlayer = MediaPlayer.create(context, playlistID[playlistPosition]); // Load song
+        mediaPlayer.start(); // Start playing song
+    }
 
     // returns current song title
     String getCurrentSongTitle() {
@@ -37,13 +42,55 @@ public class MyMediaPlayer {
     }
 
     // returns false if paused, true if currently playing
-    boolean togglePlayPause(){
-        if(mediaPlayers[playlistPosition].isPlaying()){
-            mediaPlayers[playlistPosition].pause();
+    boolean togglePlayPause() {
+        if (isPlaying) {
+            mediaPlayer.pause();
+            isPlaying = false;
             return false;
         } else {
-            mediaPlayers[playlistPosition].start();
+            mediaPlayer.start();
+            isPlaying = true;
             return true;
         }
+    }
+
+    public void onPreparedListener(MediaPlayer mediaplayer) {
+        // We now have buffered enough to be able to play
+        mediaPlayer.start();
+    }
+
+    // Returns song title
+    String playNextSong() {
+        mediaPlayer.stop(); // Stop current song
+
+        // Go to next song or reset position to first song if position is at last song
+        if (playlistPosition < 2) {
+            playlistPosition++;
+        } else {
+            playlistPosition = 0;
+        }
+
+        playSongInPlaylist(playlistPosition); // Start next song
+        return songTitles[playlistPosition];
+    }
+
+    String playPreviousSong() {
+        mediaPlayer.stop(); // Stop current song
+
+        // Go to next song or reset position to first song if position is at last song
+        if (playlistPosition > 0) {
+            playlistPosition--;
+        } else {
+            playlistPosition = 2;
+        }
+
+        playSongInPlaylist(playlistPosition); // Start next song
+        return songTitles[playlistPosition];
+    }
+
+    void stopSong() {
+        mediaPlayer.pause(); // Pause song
+        mediaPlayer.seekTo(0); // Rewind to start of song
+        isPlaying = false;
     }
 }

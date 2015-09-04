@@ -78,7 +78,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Previous button pressed!");
-
+                String songTitle = mediaPlayer.playPreviousSong();
+                tvSongTitle.setText(songTitle);
+                tvStatus.setText("Playing");
             }
         };
         btnPrevious.setOnClickListener(oclBtnPrevious);
@@ -88,7 +90,9 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Next button pressed!");
-
+                String songTitle = mediaPlayer.playNextSong();
+                tvSongTitle.setText(songTitle);
+                tvStatus.setText("Playing");
             }
         };
         btnNext.setOnClickListener(oclBtnNext);
@@ -99,7 +103,8 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Log.d("Button", "Stop button pressed!");
-
+                mediaPlayer.stopSong();
+                tvStatus.setText("Stopped");
             }
         };
         btnStop.setOnClickListener(oclBtnStop);
