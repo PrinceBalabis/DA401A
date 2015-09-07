@@ -23,9 +23,10 @@ public class KnockSensor {
     private double knockSensitivity = 3;
     private long previousDetectedAccelerationChange = 0;
     private long detectedVibrationDebounceTime = 250; // How long to ignore detected vibrations after last was detected(ms)
-    private long lastKnockTimeOut = 500; // How long you have to make another knock before the next knock is considered a new command
+    private long lastKnockTimeOut = 1000; // How long you have to make another knock before the next knock is considered a new command
     private int amountKnocksDetected = 0; // this keeps count on how many knocks has been detected in a command
-
+    private long timeSincePreviousDetectedThresholdReach = 0;
+    private long lastKnockTime = 0;
     private final SensorEventListener mSensorListener = new SensorEventListener() {
         public void onSensorChanged(SensorEvent se) {
             float x = se.values[0];
@@ -36,36 +37,41 @@ public class KnockSensor {
             float delta = mAccelCurrent - mAccelLast;
             mAccel = mAccel * 0.9f + delta; // perform low-cut filter
 
-            if (mAccel > knockSensitivity) {  // What happens when a vibration is detected
-                long timeSincePreviousDetectedVibration = SystemClock.elapsedRealtime() - previousDetectedAccelerationChange;
+            // If knock timeout - then run command
+            if (lastKnockTimeOut < (SystemClock.elapsedRealtime() - previousDetectedAccelerationChange))
+                if (amountKnocksDetected == 1) { // Play/pause command
+                    mainActivity.togglePlayPause();
+                    amountKnocksDetected = 0;
+                    Log.d(TAG, "Knock-Play/pause command");
+                    Log.d(TAG, "--------------------------");
+                } else if (amountKnocksDetected == 2) { // Next command
+                    mainActivity.playNextSong();
+                    amountKnocksDetected = 0;
+                    Log.d(TAG, "Knock-Next command");
+                    Log.d(TAG, "--------------------------");
+                } else if (amountKnocksDetected == 3) { // Previous command
+                    mainActivity.playPreviousSong();
+                    amountKnocksDetected = 0;
+                    Log.d(TAG, "Knock-Previous command");
+                    Log.d(TAG, "--------------------------");
+                }
 
-                // If knock timeout - then run command
-                if (lastKnockTimeOut < timeSincePreviousDetectedVibration)
-                    if (amountKnocksDetected == 1) { // Play/pause command
-                        mainActivity.togglePlayPause();
-                        amountKnocksDetected = 0;
-                        Log.d(TAG, "Knock-Play/pause command");
-                    } else if (amountKnocksDetected == 2) { // Next command
-                        mainActivity.playNextSong();
-                        amountKnocksDetected = 0;
-                        Log.d(TAG, "Knock-Next command");
-                    } else if (amountKnocksDetected == 3) { // Previous command
-                        mainActivity.playPreviousSong();
-                        amountKnocksDetected = 0;
-                        Log.d(TAG, "Knock-Previous command");
-                    }
 
-                // If last detected vibration was more than the set milliseconds ago then stamp this detection a new knock
-                if (detectedVibrationDebounceTime < timeSincePreviousDetectedVibration) {
+            // knock or "knock-echo" detected
+            if (mAccel > knockSensitivity) {
+                // Calculate how long time ago since knock or knock-echo
+                timeSincePreviousDetectedThresholdReach = SystemClock.elapsedRealtime() - previousDetectedAccelerationChange;
+
+                // If last detected knock or "knock-echo" was more than the set milliseconds ago then it's sure its a new knock
+                if (detectedVibrationDebounceTime < timeSincePreviousDetectedThresholdReach) {
                     //Log.d(TAG, String.valueOf((SystemClock.elapsedRealtime() - previousDetectedAccelerationChange))); // Uncomment for debug
-                    Log.d(TAG, "New knock detected!");
+                    //Log.d(TAG, "New knock detected!");
 
                     if (amountKnocksDetected == 0) {
                         amountKnocksDetected++;
+                        Log.d(TAG, "--------------------------");
                         Log.d(TAG, "First knock!");
-                    }
-                    //Count knocks if knock time out has not been reached
-                    if (lastKnockTimeOut > timeSincePreviousDetectedVibration) {
+                    } else if (lastKnockTimeOut > timeSincePreviousDetectedThresholdReach) {
                         if (amountKnocksDetected == 1) {
                             amountKnocksDetected++;
                             Log.d(TAG, "Second knock!");
@@ -74,6 +80,8 @@ public class KnockSensor {
                             Log.d(TAG, "Third knock!");
                         }
                     }
+                } else {
+                    //Log.d(TAG, "Just knock-echo!");
                 }
 
                 // Remember what time this acceleration change was detected
